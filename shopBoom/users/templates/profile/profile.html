@@ -1,0 +1,33 @@
+{% block content %}
+
+<div style="max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
+    <h2>Профиль пользователя</h2>
+
+    <p><strong>Логин:</strong> {{ request.user.username }}</p>
+
+    {% if request.user.humanname %}
+        <p><strong>Имя:</strong> {{ request.user.humanname }}</p>
+    {% endif %}
+
+    <p><strong>Email:</strong> {{ request.user.email }}</p>
+
+    {% if request.user.phonenumber %}
+        <p><strong>Телефон:</strong> {{ request.user.phonenumber }}</p>
+    {% endif %}
+
+    {% if request.user.address %}
+        <p><strong>Адрес:</strong> {{ request.user.address }}</p>
+    {% endif %}
+
+    <p><strong>Бонусы:</strong> {{ request.user.bonus }}</p>
+
+    {% if request.user.role %}
+        <p><strong>Роль:</strong> {{ request.user.role.name }}</p>
+    {% endif %}
+
+    <a href="{% url 'logout_page' %}" style="display:inline-block; margin-top:20px;">
+        Выйти из аккаунта
+    </a>
+</div>
+
+{% endblock %}
