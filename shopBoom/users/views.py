@@ -9,7 +9,8 @@ def login_user(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
-            return redirect('/')
+            return profile_page(request)
+        
     return render(request, 'auth/login.html', {'form':form})
 
 def registration_user(request):
