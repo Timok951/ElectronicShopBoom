@@ -15,8 +15,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", default=0))
-
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
+ALLOWED_HOSTS = ["*"] #os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
 
 
 # Application definition
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_prometheus',
     'shop',
     'cart',
     'users',
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -42,7 +43,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'django_prometheus.middleware.PrometheusAfterMiddleware'
+    ]
 
 ROOT_URLCONF = 'shopBoom.urls'
 
@@ -61,14 +63,26 @@ TEMPLATES = [
     },
 ]
 
+USE_X_FORWARDED_HOST = True
+
 WSGI_APPLICATION = 'shopBoom.wsgi.application'
 
 CONN_HEALTH_CHECKS = True
 
+db_engine = os.getenv("DATABASE_ENGINE", "sqlite3")
+
+if db_engine == "postgresql":
+    engine_path = "django_prometheus.db.backends.postgresql"
+
+elif db_engine == "mysql":
+    engine_path = "djangщ_prometheus.db.backends.mysql" 
+
+else: 
+    engine_path = f"django.db.backends.{db_engine}"
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.{}'.format
-        (os.getenv("DATABASE_ENGINE", "sqlite3")),
+        'ENGINE': engine_path,
         "NAME": os.getenv("DATABASE_NAME", "djangodb"),
         "USER": os.getenv("DATABASE_USERNAME", "postgres"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "1"),
@@ -116,7 +130,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 #including staticfiles dir
-STATICFILES_DIR = [
+STATICFILES_DIR  = [
     os.path.join(BASE_DIR, "static")
 ]
 
@@ -127,3 +141,5 @@ AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PROMETHEUS_MULTIPROC_DIR = os.getenv("PROMETHEUS_MULTIPROC_DIR", "/app/metrics_data")

@@ -3,11 +3,14 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path,include
+#from users.views import login_user 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #path('', login_user, name="login"),
     path('', include('users.urls')),
     path('users/', include('users.urls')),
+    path('prometheus/', include('django_prometheus.urls')),    
 
     
     #path('auth/', include("django.contrib.auth.urls")) не нужен
