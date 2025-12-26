@@ -9,8 +9,3 @@ six==1.17.0
 sqlparse==0.5.4
 typing_extensions==4.15.0
 tzdata==2025.2
-django-prometheus
-influxdb3-python
-pandas
-influxdb-client
-influxdb3-python
