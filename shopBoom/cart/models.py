@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+MAX_LENGTH = 255
+
+class OrderItem(models.Model):
+    
