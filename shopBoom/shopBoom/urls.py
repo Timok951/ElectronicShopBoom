@@ -11,11 +11,9 @@ urlpatterns = [
     path('', include('users.urls')),
     path('users/', include('users.urls')),
     path('prometheus/', include('django_prometheus.urls')),    
-
-    
     #path('auth/', include("django.contrib.auth.urls")) не нужен
     #path('cart', include('cart.url')) add later
-]
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 #if settings.Debug:
  #   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

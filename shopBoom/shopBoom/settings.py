@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'cart',
     'users',
     'analytics',
-    'articles'
+    'articles',
+    'simple_history',
+    'pgtrigger'
 ]
 
 MIDDLEWARE = [
@@ -44,7 +46,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusAfterMiddleware'
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
     ]
 
 ROOT_URLCONF = 'shopBoom.urls'
@@ -129,6 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #including staticfiles dir
 STATICFILES_DIR  = [

@@ -3,19 +3,14 @@ from .forms import LoginForm, RegistrationForm
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from .metrics import login_counter, update_metrics
-#from .influx_metrics import write_login_metric
+from users.services import AuthService
 
 def login_user(request):
     form = LoginForm(data=request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             user = form.get_user()
-            login(request,user)
-            #update metrics
-            #influxdb 
-            #write_login_metric(user.id)
-            login_counter.inc()#update login counter
-            update_metrics()#update gauges
+            AuthService.login_user(request, user)
             return profile_page(request)
         
     return render(request, 'auth/login.html', {'form':form})
