@@ -1,0 +1,55 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header class="header" id="header">
+        <!-- Borders for our page defines empty space white-->
+        <div class="wrapper">
+            <!-- Wrapper to define styles only for header -->
+            <div class="header__wrapper">
+                <!-- It is better to leave logo in divs -->
+                <div class="header__logo">
+                    <!-- Logo must be in header -->
+                    <a href="/" class="header__logo-link">
+                        <img src="{% static './img/png/ElectroLogo.png' %}" alt="BoomShop" class="header__logo-pic">
+                    </a>
+                </div>
+            <!-- Nav must be in nav tag -->
+            <nav class="header__nav">
+                <!-- ul li best way to create nav list-->
+                <ul class="header__list">
+                    <li class="header__item">
+                        <a href="{% url 'home' %}" class="header__link">Home Page</a>
+                    </li>
+                    <li class="header__item">
+                        <a href="#" class="header__link">Cart</a>
+                    </li>
+                    <li class="header__item">
+                        <a href="#" class="header__link">Articles</a>
+                    </li>
+                    <li class="header__item">
+                        <a href="{% url 'login' %}" class="header__link">Login</a>
+                    </li>
+                    <li class="header__item">
+                        <a href="{% url 'registration_page' %}" class="header__link">Register</a>
+                    </li>
+                    <li class="header__item">
+                        <a href="{% url 'profile_page' %}" class="header__link">Profile</a>
+                    </li>
+                </ul>
+                <!-- Close button -->
+                <div class="header__nav-close">
+                    <span class="header__nav-close-line"></span>
+                    <span class="header__nav-close-line"></span>
+                </div>
+            </nav>        
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

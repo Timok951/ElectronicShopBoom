@@ -2,6 +2,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.db.models import Q
 import pgtrigger
+from django.db.models import Avg
 
 MAX_LENGTH = 255
 
@@ -62,13 +63,19 @@ class Good(models.Model):
         return self.name
     
     class Meta:
-        verbose_name = "Type"
-        verbose_name_plural = "Types"
+        verbose_name = "Good"
+        verbose_name_plural = "Goods"
         constraints = [
             models.CheckConstraint(condition = models.Q(cost__gte = 0), name="Cost_must_be_greater_or_equal_0", violation_error_message="check_cost"),
             models.CheckConstraint(condition = models.Q(amount__gte = 0), name="Amount_must_be_greater_or_equal_0", violation_error_message="check_amount")
         ]
-
+    
+    def num_of_reviews(self):
+        return Rate.objects.filter(product=self).count
+    
+    def avg_rating(self):
+        return Rate.objects.filter(product=self).aggregate(Avg('rating'))['rating__avg']
+    
 class Rate(models.Model):
     good = models.ForeignKey(Good, null=True, blank=False, verbose_name="Good", on_delete=models.CASCADE)
     user = models.ForeignKey('users.User', null=True, blank=False, verbose_name="User", on_delete=models.CASCADE)

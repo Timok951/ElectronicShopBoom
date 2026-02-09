@@ -1,3 +1,8 @@
 from django.contrib import admin
+from simple_history.models import HistoricalRecords
+from .models import *
 
-# Register your models here.
+admin.site.register(UserOrders)
+admin.site.register(GoodIncome)
+admin.site.register(DangerousGoods)
+admin.site.register(OrderReport)

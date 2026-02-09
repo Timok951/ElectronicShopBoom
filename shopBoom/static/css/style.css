@@ -1,0 +1,310 @@
+/* Fonts */
+
+/* lato-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/lato-v25-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  
+  /* lato-italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 400;
+    src: url('../fonts/lato-v25-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  
+  /* lato-700 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/lato-v25-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  
+  /* lato-700italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 700;
+    src: url('../fonts/lato-v25-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  
+  /* lato-900 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 900;
+    src: url('../fonts/lato-v25-latin-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  
+  /* lato-900italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 900;
+    src: url('../fonts/lato-v25-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+/* Start */
+
+html{
+    box-sizing: border-box;
+  }
+  
+  *, *::before, *::after{
+    box-sizing: inherit;
+  }
+  
+  img{
+    max-width: 100%;
+    height: auto;
+  }
+  
+  body{
+    font-family: 'Lato';
+    font-style: normal;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: normal;
+    color: #000000;
+    overflow-x: hidden;
+  
+  }
+  
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .wrapper{
+    max-width: 1060px;
+    margin: 0 auto; /* Center */
+    padding: 0 15px; /* Adaptive landing */
+  }
+  
+.header{
+/* No scrollable header*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: .4s linear;
+    padding: 20px;
+    z-index: 999;
+    background: #00296b;
+
+}
+  
+/* Example of nav list */
+.header__logo-pic{
+  max-width: 45px;
+  max-height: 45px;
+}
+
+.header__wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 56px;
+
+  }
+
+  .header__list{
+    display: flex; /*Using flex we can make row from column*/
+    flex-wrap: wrap;
+  }
+  
+  .header__item{
+    margin-right: 82px; /*defines margins to create space between elements*/
+  }
+  
+  .header__item:last-child{
+    margin-right: 0px; /*Disabl margin for last element*/
+}
+  
+.header__link{
+    font-size: 18px;
+    line-height: 24px;
+    color: white;
+    text-decoration: none;
+}
+  
+  .header__link:hover, .header__link:focus, .header__link:active { 
+    opacity: 0.75;
+  }
+  
+/* End of nav list */
+  
+/* Top styles start */
+.top{
+    margin-bottom: 88px;
+    padding-top: 263px;
+  }
+  
+  .top__title{
+    margin-bottom: 54px;
+  }
+  
+  .top__cards{
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    gap: 57px;
+  }
+  
+.top__card-pic{
+    position: relative;
+    margin-bottom: 15px;
+  }
+  
+  
+  /*Implementing likes and comments count*/
+.top__card-stats{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(21, 24, 36, 0.6);
+    padding: 16px 12px; /* Top padding 16 right and lef 12px*/
+  }
+  
+.top__card-title{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: white;
+    margin: 0 auto 0 0; /* Position left right margit auto */
+  }
+
+.top__card-price-text{
+  text-align: center;
+}
+  
+.top__card-likes{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: white;
+    padding-right: 20px;
+    background: url(../img/svg/heart.svg) no-repeat right;
+    margin-right: 14px;
+  }
+  
+.top__card-comments{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: white;
+    padding-right: 23px;
+    background: url(../img/svg/Comment.svg) no-repeat right;
+  }
+.top__card-link{
+  color: white;
+  text-decoration: none;
+}
+
+.top__card-link:hover{
+  opacity: 0.75;
+  transition: linear;
+}
+
+  .top__card-misc{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  /* align to button */
+  .top__card{
+    grid-column: span 2;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  
+  .top_card-button{
+    width: 118px;
+    padding: 12px 19px; /* Better to use padding to create button fill */
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 16px;
+    color: white;
+    background: #1B7DFF;
+    border: 0;
+    text-decoration: none;
+    margin: auto 0 0 0; /* bottom part*/
+    /*Animation*/
+    transition-property: background-color , color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    text-align: center;
+  }
+
+   /* Transition */
+  .top_card-button:hover , .top_card-more:focus, .top_card-more:active  {
+    background-color:  #a0c1ec;
+    color: black;
+  }
+
+  .footer{
+    background: #0E1D28;
+    padding: 119px 0; /* padding top bottom */
+  }
+  
+  .footer__item{
+    display: flex;
+    flex-wrap: wrap;
+    
+  }
+  
+  .footer__logo{
+    width: 50%;
+  }
+  
+  .footer__nav{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 50%;
+  }
+  
+  .footer__menu-title{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: white;
+    font-weight: normal;
+    text-decoration: none;
+  }
+  
+  .footer__menu-link{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: white;
+    font-weight: normal;
+    text-decoration: none;
+  
+  }
+  
+  .footer__menu-link:hover, footer__menu-link:focus, footer__menu-link:active{
+    opacity: .75;
+  }
+  
+  
+  /* Top styles end */

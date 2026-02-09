@@ -1,0 +1,44 @@
+{% extends "index.html" %} {% block content %}
+
+<section class="top">
+    <div class="wrapper">
+        <h2 class="top__title section__title">
+            Electronic shop Goods
+        </h2>
+        {% for Good in Goods %}
+        <div class="top__cards">
+            <div class="top__card">
+                <div class="top__card-pic">
+                    <img src="{{Good.image.url}}" alt="Good" class="top__card-thumb">
+                    <div class="top__card-stats">
+                        <h3 class="top__card-title">
+                            {{Good.name}}
+                        </h3>
+                        <div class="top__card-likes">
+                            <a href="#!" class="top__card-link">
+                                <span class="top__card-likes-value">
+                                    {{product.average_raiting | default:"0" }}
+                                </span>
+                            </a>
+
+                        </div>
+                        <div class="top__card-comments">
+                            <a href="#!" class="top__card-link">
+                                <span class="top__card-comments-value">
+                                    {{product.review_count | default:"0" }}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="top__card-price">
+                    <p class="top__card-price-text">${{Good.cost}}</p>
+                </div>
+                <p class="top__card-misc">
+                    <a href="#!" class="top_card-button">Buy</a>
+                    <a href="#!" class="top_card-button">See more</a>
+                </p>
+                {% endfor %}
+
+            </div>
+{% endblock %}

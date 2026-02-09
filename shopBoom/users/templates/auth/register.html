@@ -1,5 +1,5 @@
-{% extends 'base.html' %}
-
+{% extends 'index.html' %}
+{% csrf_token %}
 {% block content %}
   <h2>Регистрация</h2>
   <form method="post">
@@ -8,6 +8,5 @@
     <button type="submit">Зарегистрироваться</button>
   </form>
   <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a></p>
-  <a href="{% url 'capacitor_list' %}">Назад</a>
 
 {% endblock %}

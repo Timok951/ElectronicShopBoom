@@ -5,9 +5,8 @@ MAX_LENGTH = 255
 
 #Views
 class UserOrders(models.Model):
-    id = models.AutoField(primary_key=True)
     adress = models.CharField(db_column="user_adres", max_length=MAX_LENGTH)
-    email = models.EmailField(db_column="user_email", max_length=MAX_LENGTH)
+    email = models.EmailField(db_column="user_email", max_length=MAX_LENGTH, primary_key=True)
     phonenumber = models.TextField(db_column="user_phonenumber", max_length=MAX_LENGTH)
     date = models.DateField(db_column="cart_date",max_length=MAX_LENGTH)
     
@@ -27,7 +26,7 @@ class GoodIncome(models.Model):
 
 
 class DangerousGoods(models.Model):
-    dangerous_good = models.IntegerField(db_column="shop_good.id", primary_key=True)
+    dangerous_good = models.IntegerField(db_column="id", primary_key=True)
     good = models.CharField(db_column="good_name", max_length=MAX_LENGTH)
     amount = models.CharField(db_column="good_amount", max_length=MAX_LENGTH)
 
@@ -37,12 +36,11 @@ class DangerousGoods(models.Model):
 
 class OrderReport(models.Model):
     order_id = models.IntegerField(primary_key=True, db_column="order_id")
-    date = models.DateField(db_column="order_date")
+    date = models.DateField(db_column="order_date", )
     username = models.CharField(db_column="username")
     product_name = models.CharField(db_column="product_name")
-    amount = models.IntegerField()
-    price_at_purchase = models.DecimalField(db_column="price_at_purchase")
-    total = models.DecimalField(db_column="total")
+    price_at_purchase = models.DecimalField(db_column="price_at_purchase", decimal_places=2, max_digits=MAX_LENGTH)
+    total = models.DecimalField(db_column="total", decimal_places=2, max_digits=MAX_LENGTH)
 
     class Meta:
         managed = False

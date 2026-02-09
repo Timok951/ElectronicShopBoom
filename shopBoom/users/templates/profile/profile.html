@@ -1,6 +1,7 @@
+{% extends 'index.html' %} 
+{% csrf_token %}
 {% block content %}
 
-<div style="max-width:600px; margin:20px auto; padding:20px; border:1px solid #ddd; border-radius:8px;">
     <h2>Профиль пользователя</h2>
 
     <p><strong>Логин:</strong> {{ request.user.username }}</p>
