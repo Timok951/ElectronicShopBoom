@@ -1,10 +1,12 @@
-{% extends "index.html" %} {% block content %}
+{% extends "index.html" %} 
+{% block content %}
 
 <section class="top">
     <div class="wrapper">
         <h2 class="top__title section__title">
             Electronic shop Goods
         </h2>
+        {% with Users.favorites.all as favorite_good %}
         {% for Good in Goods %}
         <div class="top__cards">
             <div class="top__card">
@@ -14,17 +16,24 @@
                         <h3 class="top__card-title">
                             {{Good.name}}
                         </h3>
-                        <div class="top__card-likes">
+                        <div class="top__card">
                             <a href="#!" class="top__card-link">
-                                <span class="top__card-likes-value">
-                                    {{product.average_raiting | default:"0" }}
-                                </span>
-                            </a>
+                                {% if Goods in favorite_good %}
+                                    good in vavorite
+                                    <span class="top__card-likes-true">
 
+                                            {{product.num_of_favorites | default:"0" }}
+                                    </span>
+                                {% else %}
+                                    <span class="top__card-likes">
+                                            {{product.num_of_favorites | default:"0" }}
+                                    </span>
+                                {% endif %}
+                            </a>
                         </div>
-                        <div class="top__card-comments">
+                        <div class="top__card">
                             <a href="#!" class="top__card-link">
-                                <span class="top__card-comments-value">
+                                <span class="top__card-comments">
                                     {{product.review_count | default:"0" }}
                                 </span>
                             </a>
@@ -36,9 +45,10 @@
                 </div>
                 <p class="top__card-misc">
                     <a href="#!" class="top_card-button">Buy</a>
-                    <a href="#!" class="top_card-button">See more</a>
+                    <a href="{% url 'good_page' Good.id %}" class="top_card-button">See more</a>
                 </p>
                 {% endfor %}
 
             </div>
+{% endwith %}
 {% endblock %}

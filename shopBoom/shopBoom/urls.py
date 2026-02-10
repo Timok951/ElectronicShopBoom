@@ -10,7 +10,8 @@ urlpatterns = [
     #path('', login_user, name="login"),
     path('', include('users.urls')),
     path('users/', include('users.urls')),
-    path('prometheus/', include('django_prometheus.urls')),    
+    path('prometheus/', include('django_prometheus.urls')), 
+    path('', include('shop.urls')),
     #path('auth/', include("django.contrib.auth.urls")) не нужен
     #path('cart', include('cart.url')) add later
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -3,6 +3,7 @@ from simple_history.models import HistoricalRecords
 from django.db.models import Q
 import pgtrigger
 from django.db.models import Avg
+from users.models import UserFavorites
 
 MAX_LENGTH = 255
 
@@ -75,6 +76,9 @@ class Good(models.Model):
     
     def avg_rating(self):
         return Rate.objects.filter(product=self).aggregate(Avg('rating'))['rating__avg']
+    
+    def num_of_favorites(self):
+        return UserFavorites.objects.filter(product=self).count
     
 class Rate(models.Model):
     good = models.ForeignKey(Good, null=True, blank=False, verbose_name="Good", on_delete=models.CASCADE)

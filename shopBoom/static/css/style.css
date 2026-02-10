@@ -203,6 +203,17 @@ html{
     background: url(../img/svg/heart.svg) no-repeat right;
     margin-right: 14px;
   }
+
+.top__card-likes-true{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: white;
+    padding-right: 20px;
+    background: url(../img/svg/heart-red.svg) no-repeat right;
+    margin-right: 14px;
+  }
+  
   
 .top__card-comments{
     font-weight: 500;
@@ -212,6 +223,8 @@ html{
     padding-right: 23px;
     background: url(../img/svg/Comment.svg) no-repeat right;
   }
+
+  
 .top__card-link{
   color: white;
   text-decoration: none;
