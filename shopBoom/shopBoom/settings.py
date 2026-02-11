@@ -28,13 +28,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_prometheus',
+    'django_filters',
     'shop',
     'cart',
     'users',
     'analytics',
     'articles',
     'simple_history',
-    'pgtrigger'
+    'pgtrigger',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },  
     },
@@ -144,6 +146,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIR  = [
     os.path.join(BASE_DIR, "static")
 ]
+
+CART_SESSION_ID = 'cart'
 
 LOGIN_URL = "/login"
 

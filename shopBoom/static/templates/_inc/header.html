@@ -21,12 +21,12 @@
             <!-- Nav must be in nav tag -->
             <nav class="header__nav">
                 <!-- ul li best way to create nav list-->
-                <ul class="header__list">
+                <ul class="header__list" id="category-select">
                     <li class="header__item">
                         <a href="{% url 'home' %}" class="header__link">Home Page</a>
                     </li>
                     <li class="header__item">
-                        <a href="#" class="header__link">Cart</a>
+                        <a href="{% url 'cart_summarry' %}" class="header__link">Cart</a>
                     </li>
                     <li class="header__item">
                         <a href="#" class="header__link">Articles</a>

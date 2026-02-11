@@ -58,6 +58,7 @@ class Good(models.Model):
     type = models.ForeignKey(Type, null=True, blank=True, verbose_name="Type", on_delete=models.CASCADE)
     company = models.ForeignKey(Company, null=True, blank=True, verbose_name="Company", on_delete=models.CASCADE)
     tag = models.ManyToManyField(Tag, null=False, blank=False, verbose_name="Tag")
+    
     history = HistoricalRecords()
 
     def __str__(self):

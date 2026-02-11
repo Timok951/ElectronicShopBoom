@@ -6,6 +6,13 @@
         <h2 class="top__title section__title">
             Electronic shop Goods
         </h2>
+        <form method="GET">
+            <table>
+                {% csrf_token %}
+                {{ Form.as_p }}
+                <button type="submit">Фильтровать</button>
+            </table>
+        </form>
         {% with Users.favorites.all as favorite_good %}
         {% for Good in Goods %}
         <div class="top__cards">
@@ -44,7 +51,7 @@
                     <p class="top__card-price-text">${{Good.cost}}</p>
                 </div>
                 <p class="top__card-misc">
-                    <a href="#!" class="top_card-button">Buy</a>
+                    <a value="{% url 'card_add' Good.id %}" class="top_card-button" id="add-cart">Buy</a>
                     <a href="{% url 'good_page' Good.id %}" class="top_card-button">See more</a>
                 </p>
                 {% endfor %}
