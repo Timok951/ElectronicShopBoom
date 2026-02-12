@@ -75,6 +75,7 @@ def cart_summarry(request):
     )
     return render(request, "cart/cart_summary.html", context)
 
+@transaction.atomic
 @require_POST
 def cart_add(request, pk):
     cart = Cart(request)
@@ -93,6 +94,7 @@ def cart_add(request, pk):
     )
     return redirect("cart_summarry")
 
+@transaction.atomic
 @require_POST
 def cart_delete(request, pk):
     cart = Cart(request)
@@ -100,6 +102,7 @@ def cart_delete(request, pk):
     cart.remove(good)
     return redirect("cart_summarry")
 
+@transaction.atomic
 @require_POST
 def cart_update(request, pk):
     cart = Cart(request)
@@ -118,7 +121,7 @@ def cart_update(request, pk):
     )
     return redirect("cart_summarry")
 
-
+@transaction.atomic
 @login_required
 @require_POST
 def cart_checkout(request):
@@ -224,7 +227,7 @@ def cart_checkout(request):
 
 
 
-
+@transaction.atomic
 def _send_order_confirmation(
     user,
     order,

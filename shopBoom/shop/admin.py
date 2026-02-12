@@ -7,3 +7,5 @@ admin.site.register(Company, SimpleHistoryAdmin)
 admin.site.register(Type, SimpleHistoryAdmin)
 admin.site.register(Good, SimpleHistoryAdmin)
 admin.site.register(Rate, SimpleHistoryAdmin)
+
+

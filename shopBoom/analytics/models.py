@@ -1,5 +1,6 @@
 from django.db import models
 from simple_history.models import HistoricalRecords
+from cart.models import Order
 import pgtrigger
 MAX_LENGTH = 255
 
