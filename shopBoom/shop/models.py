@@ -73,13 +73,13 @@ class Good(models.Model):
         ]
     
     def num_of_reviews(self):
-        return Rate.objects.filter(product=self).count
+        return Rate.objects.filter(good=self, isdeleted=True).count()
     
     def avg_rating(self):
-        return Rate.objects.filter(product=self).aggregate(Avg('rating'))['rating__avg']
+        return Rate.objects.filter(good=self, isdeleted=True).aggregate(Avg('rating'))['rating__avg']
     
     def num_of_favorites(self):
-        return UserFavorites.objects.filter(product=self).count
+        return UserFavorites.objects.filter(good=self).count()
     
 class Rate(models.Model):
     good = models.ForeignKey(Good, null=True, blank=False, verbose_name="Good", on_delete=models.CASCADE)
@@ -90,7 +90,7 @@ class Rate(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.name
+        return f"{self.user} -> {self.good}"
     
     class Meta:
         verbose_name = "Rate"

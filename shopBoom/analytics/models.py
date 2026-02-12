@@ -29,7 +29,7 @@ class DangerousGoods(models.Model):
     dangerous_good = models.IntegerField(db_column="id", primary_key=True)
     good = models.CharField(db_column="good_name", max_length=MAX_LENGTH)
     amount = models.CharField(db_column="good_amount", max_length=MAX_LENGTH)
-
+    
     class Meta:
         managed = False
         db_table = "dangerous_goods"
@@ -41,7 +41,7 @@ class OrderReport(models.Model):
     product_name = models.CharField(db_column="product_name")
     price_at_purchase = models.DecimalField(db_column="price_at_purchase", decimal_places=2, max_digits=MAX_LENGTH)
     total = models.DecimalField(db_column="total", decimal_places=2, max_digits=MAX_LENGTH)
-
+    
     class Meta:
         managed = False
         db_table = "orders_report"

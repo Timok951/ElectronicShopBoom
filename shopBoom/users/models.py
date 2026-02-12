@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 MAX_LENGTH = 255
 
 class Role(models.Model):
     rolename = models.CharField(unique=True, max_length=MAX_LENGTH)
-    
+
     def __str__(self):
         return self.rolename
     
@@ -35,6 +37,28 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
+class UserPreference(models.Model):
+    THEME_CHOICES = [
+        ("light", "Light"),
+        ("dark", "Dark"),
+        ("gold", "Gold"),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="preference")
+    theme = models.CharField(max_length=16, choices=THEME_CHOICES, default="light")
+    date_format = models.CharField(max_length=32, default="%Y-%m-%d")
+    page_size = models.PositiveIntegerField(default=12)
+    saved_filters = models.JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} preferences"
+
+
+@receiver(post_save, sender=User)
+def ensure_user_preferences(sender, instance, created, **kwargs):
+    if created:
+        UserPreference.objects.create(user=instance)
+
 class UserCredenetials(models.Model):
     user = models.OneToOneField(User, null=False, blank=False,verbose_name="User", on_delete=models.CASCADE)
     humanname = models.CharField(unique=True, null=True, max_length=MAX_LENGTH,blank=True, verbose_name="User real name")

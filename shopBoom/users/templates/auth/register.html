@@ -1,11 +1,24 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
 {% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зарегистрироваться</button>
-  </form>
-  <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a></p>
+
+<section class="top">
+    <div class="wrapper">
+        <div class="form-card">
+            <header class="top__intro">
+                <p class="top__subtitle">Create a ShopBoom account</p>
+                <h2 class="top__title section__title">Registration</h2>
+                <p class="top__description">Tell us who you are and start ordering components.</p>
+            </header>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="top_card-button">Create account</button>
+            </form>
+            <p class="top__description">
+                Already registered? <a href="{% url 'login' %}">Sign in</a>.
+            </p>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

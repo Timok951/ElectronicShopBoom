@@ -1,61 +1,150 @@
-{% extends "index.html" %} 
+{% extends "index.html" %}
 {% block content %}
 
 <section class="top">
     <div class="wrapper">
-        <h2 class="top__title section__title">
-            Electronic shop Goods
-        </h2>
-        <form method="GET">
-            <table>
-                {% csrf_token %}
-                {{ Form.as_p }}
-                <button type="submit">Фильтровать</button>
-            </table>
-        </form>
-        {% with Users.favorites.all as favorite_good %}
-        {% for Good in Goods %}
-        <div class="top__cards">
-            <div class="top__card">
-                <div class="top__card-pic">
-                    <img src="{{Good.image.url}}" alt="Good" class="top__card-thumb">
-                    <div class="top__card-stats">
-                        <h3 class="top__card-title">
-                            {{Good.name}}
-                        </h3>
-                        <div class="top__card">
-                            <a href="#!" class="top__card-link">
-                                {% if Goods in favorite_good %}
-                                    good in vavorite
-                                    <span class="top__card-likes-true">
+        <header class="top__intro">
+            <p class="top__subtitle">Components curated for every electronics project.</p>
+            <h2 class="top__title section__title">ShopBoom electronics catalog</h2>
+            <p class="top__description">
+                Browse capacitors, resistors, sensors and more with live stock and smart filters.
+            </p>
+        </header>
 
-                                            {{product.num_of_favorites | default:"0" }}
-                                    </span>
-                                {% else %}
-                                    <span class="top__card-likes">
-                                            {{product.num_of_favorites | default:"0" }}
-                                    </span>
-                                {% endif %}
-                            </a>
-                        </div>
-                        <div class="top__card">
-                            <a href="#!" class="top__card-link">
-                                <span class="top__card-comments">
-                                    {{product.review_count | default:"0" }}
-                                </span>
-                            </a>
+        <form method="GET" class="filter-grid form-card">
+            {% csrf_token %}
+            <div class="filter-field">
+                {{ Form.name.label_tag }}
+                {{ Form.name }}
+            </div>
+            <div class="filter-field">
+                {{ Form.type.label_tag }}
+                {{ Form.type }}
+            </div>
+            <div class="filter-field">
+                {{ Form.company.label_tag }}
+                {{ Form.company }}
+            </div>
+            <div class="filter-field">
+                {{ Form.cost.label_tag }}
+                {{ Form.cost }}
+            </div>
+            <div class="filter-field filter-field--tags">
+                {{ Form.tag.label_tag }}
+                {{ Form.tag }}
+            </div>
+            <div class="filter-field filter-actions">
+                <button type="submit" class="top_card-button">Apply filters</button>
+                <a href="{% url 'home' %}" class="top_card-button top_card-button--ghost">Clear filters</a>
+            </div>
+        </form>
+
+        {% if saved_filter_summary %}
+            <div class="filter-note">
+                <strong>Saved filters:</strong>
+                <div class="filter-note__list">
+                    {% for entry in saved_filter_summary %}
+                        <span>{{ entry.label }}: {{ entry.value }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="top__cards">
+            {% for Good in page_obj %}
+                <div class="top__card">
+                    <div class="top__card-pic">
+                        <img src="{{ Good.image.url }}" alt="Good" class="top__card-thumb">
+                        <div class="top__card-stats">
+                            <h3 class="top__card-title">{{ Good.name }}</h3>
                         </div>
                     </div>
+                    <div class="top__card-meta">
+                        <span>{% if Good.type %}{{ Good.type.name }}{% else %}General{% endif %}</span>
+                        <span>{% if Good.company %}{{ Good.company.name }}{% else %}Independent source{% endif %}</span>
+                    </div>
+                    {% with Good.tag.all as tag_list %}
+                        {% if tag_list %}
+                            <div class="top__card-tags">
+                                {% for tag in tag_list %}
+                                    <span class="top__tag-pill">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    <div class="top__card-price">
+                        <p class="top__card-price-text">${{ Good.cost|floatformat:2 }}</p>
+                        <p class="top__card-price-text">Stock: {{ Good.amount }}</p>
+                    </div>
+                    <div class="top__card-misc">
+                        <form method="post" action="{% url 'cart_add' Good.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="top_card-button">Buy now</button>
+                        </form>
+                        <a href="{% url 'good_page' Good.id %}" class="top_card-button">See details</a>
+                    </div>
                 </div>
-                <div class="top__card-price">
-                    <p class="top__card-price-text">${{Good.cost}}</p>
-                </div>
-                <p class="top__card-misc">
-                    <a value="{% url 'card_add' Good.id %}" class="top_card-button" id="add-cart">Buy</a>
-                    <a href="{% url 'good_page' Good.id %}" class="top_card-button">See more</a>
-                </p>
-                {% endfor %}
+            {% empty %}
+                <p class="top__empty">No products matched your filters.</p>
+            {% endfor %}
+        </div>
 
-            </div>
-{% endwith %}
+        <div class="pagination-controls">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="top_card-button">Previous</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="top_card-button">Next</a>
+            {% endif %}
+        </div>
+
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_staff or request.user.is_superuser %}
+                <section class="top__shortcuts">
+                    <h3 class="section__title">Quick actions</h3>
+                    <div class="top__cards">
+                        <div class="top__card">
+                            <p>Analytics reports</p>
+                            <a href="{% url 'analytics_reports' %}" class="top_card-button">Reports</a>
+                        </div>
+                        <div class="top__card">
+                            <p>Requirements overview</p>
+                            <a href="{% url 'analytics_requirements' %}" class="top_card-button">Requirements</a>
+                        </div>
+                        <div class="top__card">
+                            <p>Database backup</p>
+                            <a href="{% url 'admin_backup' %}" class="top_card-button">Backup</a>
+                        </div>
+                    </div>
+                </section>
+            {% elif request.user.role %}
+                {% with request.user.role.rolename|lower as role_name %}
+                    {% if role_name == "admin" or role_name == "administrator" %}
+                        <section class="top__shortcuts">
+                            <h3 class="section__title">Quick actions</h3>
+                            <div class="top__cards">
+                                <div class="top__card">
+                                    <p>Analytics reports</p>
+                                    <a href="{% url 'analytics_reports' %}" class="top_card-button">Reports</a>
+                                </div>
+                                <div class="top__card">
+                                    <p>Requirements overview</p>
+                                    <a href="{% url 'analytics_requirements' %}" class="top_card-button">Requirements</a>
+                                </div>
+                                <div class="top__card">
+                                    <p>Database backup</p>
+                                    <a href="{% url 'admin_backup' %}" class="top_card-button">Backup</a>
+                                </div>
+                            </div>
+                        </section>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+        {% endif %}
+
+    </div>
+</section>
+
 {% endblock %}

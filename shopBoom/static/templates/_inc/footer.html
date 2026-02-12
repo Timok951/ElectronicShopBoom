@@ -6,8 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <footer>
-        <p>Shop 100 volt</p>
-    </footer>
+<footer class="footer">
+    <div class="footer__item">
+        <p class="footer__tagline">Curating electronics solutions with clarity and care.</p>
+        <div class="footer__nav">
+            <a class="footer__menu-link" href="{% url 'home' %}">Home</a>
+            <a class="footer__menu-link" href="{% url 'cart_summarry' %}">Cart</a>
+            <a class="footer__menu-link" href="{% url 'article_list' %}">Articles</a>
+        </div>
+    </div>
+    <small class="footer__menu-link">(c) {% now "Y" %} ShopBoom</small>
+</footer>
 </body>
 </html>

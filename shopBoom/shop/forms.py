@@ -1,5 +1,5 @@
 from django import forms
-from .models import Type
+from .models import Type, Good, Rate
 
 
 """
@@ -11,3 +11,27 @@ class FilterForm(forms.Form):
 
 
 """
+
+
+class GoodForm(forms.ModelForm):
+    class Meta:
+        model = Good
+        fields = [
+            "name",
+            "amount",
+            "cost",
+            "image",
+            "max_voltage",
+            "capacity",
+            "resistance",
+            "article",
+            "type",
+            "company",
+            "tag",
+        ]
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Rate
+        fields = ["rating", "comment"]

@@ -12,7 +12,9 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('prometheus/', include('django_prometheus.urls')), 
     path('', include('shop.urls')),
-    path('cart/', include('cart.urls'))
+    path('cart/', include('cart.urls')),
+    path('analytics/', include('analytics.urls')),
+    path('articles/', include('articles.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 #if settings.Debug:

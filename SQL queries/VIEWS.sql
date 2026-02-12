@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW user_orders AS
+CREATE OR MATERIALIZED VIEW user_orders AS
 (
 SELECT 
 c.address AS user_adres,

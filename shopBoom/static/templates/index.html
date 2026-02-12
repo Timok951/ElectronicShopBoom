@@ -4,15 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electronic shopt</title>
+    <title>ShopBoom Electronics</title>
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'javascript/jquerry.JS' %}" type="text/javascript"></script>
+    <script src="{% static 'javascript/shortcuts.js' %}" type="module"></script>
 </head>
-<body>
+<body class="{% if user_preference %}theme-{{ user_preference.theme }}{% else %}theme-light{% endif %}">
     {%block header%}
         {%include "_inc/header.html"%}
     {%endblock%}
+    {% if messages %}
+        <div class="message-stack">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <main>
         {% block content%}

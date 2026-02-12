@@ -29,17 +29,50 @@
                         <a href="{% url 'cart_summarry' %}" class="header__link">Cart</a>
                     </li>
                     <li class="header__item">
-                        <a href="#" class="header__link">Articles</a>
+                        <a href="{% url 'article_list' %}" class="header__link">Articles</a>
                     </li>
-                    <li class="header__item">
-                        <a href="{% url 'login' %}" class="header__link">Login</a>
-                    </li>
-                    <li class="header__item">
-                        <a href="{% url 'registration_page' %}" class="header__link">Register</a>
-                    </li>
-                    <li class="header__item">
-                        <a href="{% url 'profile_page' %}" class="header__link">Profile</a>
-                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="header__item">
+                            <a href="{% url 'profile_page' %}" class="header__link">Profile</a>
+                        </li>
+                        <li class="header__item">
+                            <a href="{% url 'user_settings' %}" class="header__link">Settings</a>
+                        </li>
+                        {% if request.user.is_staff or request.user.is_superuser %}
+                            <li class="header__item">
+                                <a href="{% url 'admin_backup' %}" class="header__link">Backup</a>
+                            </li>
+                            <li class="header__item">
+                                <a href="/admin/" class="header__link">Admin panel</a>
+                            </li>
+                        {% elif request.user.role %}
+                            {% with request.user.role.rolename|lower as role_name %}
+                                {% if role_name == "admin" or role_name == "administrator" %}
+                                    <li class="header__item">
+                                        <a href="{% url 'admin_report_pdf' %}" class="header__link">PDF report</a>
+                                    </li>
+                                    <li class="header__item">
+                                        <a href="{% url 'admin_backup' %}" class="header__link">Backup</a>
+                                    </li>
+                                    <li class="header__item">
+                                        <a href="/admin/" class="header__link">Admin panel</a>
+                                    </li>
+                                {% endif %}
+                                {% if role_name == "warehouse" %}
+                                    <li class="header__item">
+                                        <a href="{% url 'warehouse_dashboard' %}" class="header__link">Warehouse</a>
+                                    </li>
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
+                    {% else %}
+                        <li class="header__item">
+                            <a href="{% url 'login' %}" class="header__link">Login</a>
+                        </li>
+                        <li class="header__item">
+                            <a href="{% url 'registration_page' %}" class="header__link">Register</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <!-- Close button -->
                 <div class="header__nav-close">

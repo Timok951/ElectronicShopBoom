@@ -11,21 +11,36 @@ class Cart(object):
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+
+    def save(self):
+        self.session.modified = True
     
     def add(self, good, amount=1, override_quantity=False):
-        good_id = str(good["id"])
+        good_id = str(good.id)
         if good_id not in self.cart:
-            self.cart[good_id] = {'amount': 0,
-                                     'price_at_purchase': str(good["price"])
-                                     }
+            self.cart[good_id] = {
+                'amount': 0,
+                'price_at_purchase': str(good.cost),
+            }
+        if good.amount <= 0:
+            if good_id in self.cart:
+                del self.cart[good_id]
+                self.save()
+            return
+        amount = int(amount)
         if override_quantity:
+            amount = max(amount, 1)
+            amount = min(amount, good.amount)
             self.cart[good_id]['amount'] = amount
         else:
-            self.cart[good_id]['amount'] += amount
+            new_amount = self.cart[good_id]['amount'] + amount
+            new_amount = max(new_amount, 1)
+            new_amount = min(new_amount, good.amount)
+            self.cart[good_id]['amount'] = new_amount
         self.save()
     
     def remove(self,good):
-        good_id = set(good["id"])
+        good_id = str(good.id)
         
         if good_id in self.cart:
             del self.cart[good_id]
@@ -40,14 +55,18 @@ class Cart(object):
         for good in goods:
             cart[str(good.id)]['good'] = good
         for item in cart.values():
-            item['price_at_purchase'] = Decimal(item['price'])
+            item['price_at_purchase'] = Decimal(item['price_at_purchase'])
+            item['total_price'] = item['price_at_purchase'] * item['amount']
             yield item 
             
     def __len__(self):
         return sum(item['amount'] for item in self.cart.values())
     
     def get_total_price(self):
-        return sum(Decimal(item["price"]) * item["quantity"] for item in self.cart.values)
+        return sum(
+            Decimal(item["price_at_purchase"]) * item["amount"]
+            for item in self.cart.values()
+        )
     
     def clear(self):
         #revove cart form session

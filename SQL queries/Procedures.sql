@@ -20,12 +20,12 @@ CREATE OR REPLACE PROCEDURE add_good_stock(
 )
 AS $$
 BEGIN
-IF id_good < 1 THEN
+IF good_id < 1 THEN
 	ROLLBACK;
 ELSE
 	UPDATE shop_good
 	SET amount = amount + good_add
-	WHERE name = good_name;
+	WHERE id = good_id;
 END IF;
 END
 $$

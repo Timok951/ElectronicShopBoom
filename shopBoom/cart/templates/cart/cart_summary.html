@@ -1,55 +1,85 @@
-{% extends "index.html" %} 
+{% extends "index.html" %}
 {% block content %}
 
 <section class="top">
     <div class="wrapper">
-        <h2 class="top__title section__title">
-            Cart
-        </h2>
+        <header class="top__intro">
+            <p class="top__subtitle">Your selections</p>
+            <h2 class="top__title section__title">Cart</h2>
+            <p class="top__description">Review quantities, update counts, and check out with confidence.</p>
+        </header>
 
-        {% with Users.favorites.all as favorite_good %}
-        {% for Good in Goods %}
-        <div class="top__cards">
-            <div class="top__card">
-                <div class="top__card-pic">
-                    <img src="{{Good.image.url}}" alt="Good" class="top__card-thumb">
-                    <div class="top__card-stats">
-                        <h3 class="top__card-title">
-                            {{Good.name}}
-                        </h3>
-                        <div class="top__card">
-                            <a href="#!" class="top__card-link">
-                                {% if Goods in favorite_good %}
-                                    good in vavorite
-                                    <span class="top__card-likes-true">
+        {% if cart|length == 0 %}
+            <div class="form-card">
+                <p>Your cart is empty.</p>
+                <a href="{% url 'home' %}" class="top_card-button">Browse components</a>
+            </div>
+        {% else %}
+            {% if error %}
+                <div class="inline-alert inline-alert--error">{{ error }}</div>
+            {% endif %}
 
-                                            {{product.num_of_favorites | default:"0" }}
-                                    </span>
-                                {% else %}
-                                    <span class="top__card-likes">
-                                            {{product.num_of_favorites | default:"0" }}
-                                    </span>
-                                {% endif %}
-                            </a>
+            <div class="top__cards">
+                {% for item in cart %}
+                    <div class="top__card">
+                        <div class="top__card-pic">
+                            <img src="{{ item.good.image.url }}" alt="Good" class="top__card-thumb">
+                            <div class="top__card-stats">
+                                <h3 class="top__card-title">
+                                    {{ item.good.name }}
+                                </h3>
+                            </div>
                         </div>
-                        <div class="top__card">
-                            <a href="#!" class="top__card-link">
-                                <span class="top__card-comments">
-                                    {{product.review_count | default:"0" }}
-                                </span>
-                            </a>
+                        <div class="top__card-meta">
+                            <span>Unit: ${{ item.price_at_purchase }}</span>
+                            <span>Qty: {{ item.amount }}</span>
+                        </div>
+                        <div class="top__card-price">
+                            <p class="top__card-price-text">Total: ${{ item.total_price }}</p>
+                        </div>
+                        <div class="top__card-misc">
+                            <form method="post" action="{% url 'cart_update' item.good.id %}">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" min="1" value="{{ item.amount }}">
+                                <button type="submit" class="top_card-button">Update</button>
+                            </form>
+                            <form method="post" action="{% url 'cart_delete' item.good.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="top_card-button top_card-button--ghost">Remove</button>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="top__card-price">
-                    <p class="top__card-price-text">${{Good.cost}}</p>
-                </div>
-                <p class="top__card-misc">
-                    <a href="#!" class="top_card-button">Buy</a>
-                    <a href="{% url 'good_page' Good.id %}" class="top_card-button">See more</a>
-                </p>
                 {% endfor %}
-
             </div>
-{% endwith %}
+
+            <div class="top__card">
+                <p class="top__card-price-text">Cart total: ${{ cart_total|floatformat:2 }}</p>
+                {% if request.user.is_authenticated %}
+                    <form method="post" action="{% url 'cart_checkout' %}" class="filter-grid">
+                        {% csrf_token %}
+                        <input type="text" name="address" placeholder="Shipping address" value="{{ address }}">
+                        <div class="filter-field">
+                            <label>Bonus available</label>
+                            <input type="text" value="{{ bonus_available|floatformat:2 }}" readonly>
+                        </div>
+                        <div class="filter-field">
+                            <label>Use bonus</label>
+                            <input type="number" name="bonus_to_use" min="0" step="0.01" max="{{ bonus_available|floatformat:2 }}" value="{{ bonus_to_use|default_if_none:'0.00' }}">
+                        </div>
+                        {% if total_after %}
+                            <p class="top__card-price-text">Total after bonus: ${{ total_after|floatformat:2 }}</p>
+                        {% endif %}
+                        {% if bonus_earned %}
+                            <p class="top__card-price-text">Bonus earned: ${{ bonus_earned|floatformat:2 }}</p>
+                        {% endif %}
+                        <button type="submit" class="top_card-button">Place order</button>
+                    </form>
+                {% else %}
+                    <p>Please <a href="{% url 'login' %}">log in</a> to checkout your order.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
 {% endblock %}

@@ -8,7 +8,6 @@ class Article (models.Model):
     text = models.TextField(blank=False, max_length=MAX_LENGTH, null=False)
     image = models.ImageField(blank=True, null=True, upload_to='uploads/articles')
     history = HistoricalRecords()
-    
     def __str__(self):
         return self.name
     

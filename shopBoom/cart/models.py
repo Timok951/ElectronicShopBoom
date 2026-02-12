@@ -20,7 +20,6 @@ class Order(models.Model):
     history = HistoricalRecords()
     isdeleted = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
-
     def __str__(self):
         return f"{self.orderitem} + {self.date}"
     

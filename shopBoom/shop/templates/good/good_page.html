@@ -1,43 +1,93 @@
-{%extends "index.html" %}
-    {% block content %}
-    {% with Users.favorites.all as favorite_good %}
-    <div class="top__cards">
+{% extends "index.html" %}
+{% block content %}
+
+<section class="top">
+    <div class="wrapper">
+        <div class="top__cards">
             <div class="top__card">
                 <div class="top__card-pic">
-                    <img src="{{Good.image.url}}" alt="Good" class="top__card-thumb">
+                    <img src="{{ Good.image.url }}" alt="{{ Good.name }}" class="top__card-thumb">
                     <div class="top__card-stats">
-                        <h3 class="top__card-title">
-                            {{Good.name}}
-                        </h3>
-                        <div class="top__card">
-                            <a href="#!" class="top__card-link">
-                                {% if Goods in favorite_good %}
-                                    good in vavorite
-                                    <span class="top__card-likes-true">
-
-                                            {{product.num_of_favorites | default:"0" }}
-                                    </span>
-                                {% else %}
-                                    <span class="top__card-likes">
-                                        {{product.num_of_favorites | default:"0" }}
-                                    </span>
-                                {% endif %}
-                            </a>
-                        </div>
-                        <div class="top__card">
-                            <a href="#!" class="top__card-link">
-                                <span class="top__card-comments">
-                                    {{product.review_count | default:"0" }}
-                                </span>
-                            </a>
-                        </div>
+                        <h3 class="top__card-title">{{ Good.name }}</h3>
                     </div>
                 </div>
-                <div class="top__card-price">
-                    <p class="top__card-price-text">${{Good.cost}}</p>
+                <div class="top__card-meta">
+                    <span>{% if Good.type %}{{ Good.type.name }}{% else %}General{% endif %}</span>
+                    <span>{% if Good.company %}{{ Good.company.name }}{% else %}Independent source{% endif %}</span>
                 </div>
-                <p class="top__card-misc">
-                    <a href="#!" class="top_card-button">Buy</a>
-                </p>
-{% endwith %}
-{% endblock content %}
+                {% with Good.tag.all as tag_list %}
+                    {% if tag_list %}
+                        <div class="top__card-tags">
+                            {% for tag in tag_list %}
+                                <span class="top__tag-pill">{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <div class="top__card-price">
+                    <p class="top__card-price-text">${{ Good.cost|floatformat:2 }}</p>
+                    <p class="top__card-price-text">Stock: {{ Good.amount }}</p>
+                </div>
+                <div class="top__card-misc">
+                    <form method="post" action="{% url 'cart_add' Good.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="top_card-button">Add to cart</button>
+                    </form>
+                    {% if request.user.is_authenticated %}
+                        <form method="post" action="{% url 'toggle_favorite' Good.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="top_card-button top_card-button--ghost">
+                                {% if is_favorite %}Remove favorite{% else %}Add to favorites{% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <a class="top_card-button top_card-button--ghost" href="{% url 'login' %}">
+                            Log in to favorite
+                        </a>
+                    {% endif %}
+                </div>
+                {% if Good.article %}
+                    <div class="top__card-article">
+                        <h4 class="section__title">Article</h4>
+                        <p>{{ Good.article.text|truncatechars:220 }}</p>
+                        <a href="{% url 'article_detail' Good.article.id %}" class="top_card-button">Read full</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="top__cards">
+            <div class="top__card">
+                <h3 class="section__title">Reviews</h3>
+                {% if reviews %}
+                    <div class="review-list">
+                        {% for review in reviews %}
+                            <div class="review-item">
+                                <strong>{{ review.user.username }}</strong>
+                                <span>Rating: {{ review.rating }}</span>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No reviews yet.</p>
+                {% endif %}
+            </div>
+            <div class="top__card">
+                <h3 class="section__title">Leave a review</h3>
+                {% if request.user.is_authenticated %}
+                    <form method="post" action="{% url 'add_review' Good.id %}">
+                        {% csrf_token %}
+                        {{ review_form.as_p }}
+                        <button type="submit" class="top_card-button">Submit review</button>
+                    </form>
+                {% else %}
+                    <p>Please <a href="{% url 'login' %}">log in</a> to leave a review.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
