@@ -1,4 +1,4 @@
-CREATE OR MATERIALIZED VIEW user_orders AS
+CREATE MATERIALIZED VIEW user_orders AS
 (
 SELECT 
 c.address AS user_adres,
@@ -14,8 +14,9 @@ FROM cart_order c
 
 CREATE MATERIALIZED VIEW  good_icome AS(
 SELECT 
-u.username AS users_income, 
 c.date AS date_income,
+u.username AS users_income, 
+
 (g.cost * ordi.amount)::Float AS oders_income
 	FROM cart_order c
 	JOIN users_user u ON u.id = c.user_id

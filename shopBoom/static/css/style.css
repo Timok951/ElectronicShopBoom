@@ -583,6 +583,24 @@ form label {
   text-decoration: none;
 }
 
+.radio-inline ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.radio-inline li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.radio-inline input[type="radio"] {
+    margin: 0;
+}
+
+
 @media (max-width: 1200px) {
   .top__cards {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

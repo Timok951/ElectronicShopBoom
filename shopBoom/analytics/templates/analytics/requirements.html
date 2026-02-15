@@ -3,7 +3,7 @@
 
 <section class="top">
     <div class="wrapper">
-        <h2 class="top__title section__title">Requirements check</h2>
+        <h2 class="top__title section__title">Проверка требований</h2>
         <div class="top__cards">
             {% for item in requirements %}
                 <div class="top__card">
@@ -11,9 +11,9 @@
                         <h3 class="top__card-title">{{ item.label }}</h3>
                     </div>
                     <p class="requirements__status">
-                        Status:
+                        Стутс:
                         <strong class="{% if item.status %}status-ok{% else %}status-missing{% endif %}">
-                            {% if item.status %}Passed{% else %}Missing{% endif %}
+                            {% if item.status %}Прошёл{% else %}Утрачен{% endif %}
                         </strong>
                     </p>
                 </div>

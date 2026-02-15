@@ -3,6 +3,7 @@
 import os
 import sys
 
+os.environ["PATH"] += os.pathsep + r"C:\Program Files (x86)\Graphviz\bin"
 
 def main():
     """Run administrative tasks."""

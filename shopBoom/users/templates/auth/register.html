@@ -5,17 +5,17 @@
     <div class="wrapper">
         <div class="form-card">
             <header class="top__intro">
-                <p class="top__subtitle">Create a ShopBoom account</p>
-                <h2 class="top__title section__title">Registration</h2>
-                <p class="top__description">Tell us who you are and start ordering components.</p>
+                <p class="top__subtitle">Создайте аккаунт ShopBoom</p>
+                <h2 class="top__title section__title">Регистрация</h2>
+                <p class="top__description">Расскажите немного о себе и начните заказывать компоненты.</p>
             </header>
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="top_card-button">Create account</button>
+                <button type="submit" class="top_card-button">Создать аккаунт</button>
             </form>
             <p class="top__description">
-                Already registered? <a href="{% url 'login' %}">Sign in</a>.
+                Уже зарегистрированы? <a href="{% url 'login' %}">Войти</a>.
             </p>
         </div>
     </div>

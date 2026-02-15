@@ -2,17 +2,6 @@ from django import forms
 from .models import Type, Good, Rate
 
 
-"""
-class FindForm(forms.Form):
-    name = forms.CharField()
-
-class FilterForm(forms.Form):
-    type = forms.ModelChoiceField(queryset=Type.objects.all(), required=False, empty_label="Type", widget=forms.Select(attrs={'placeholder': 'Country'}))
-
-
-"""
-
-
 class GoodForm(forms.ModelForm):
     class Meta:
         model = Good
@@ -29,9 +18,26 @@ class GoodForm(forms.ModelForm):
             "company",
             "tag",
         ]
+        labels = {
+            "name": "Название",
+            "amount": "Количество на складе",
+            "cost": "Цена",
+            "image": "Изображение",
+            "max_voltage": "Максимальное напряжение (В)",
+            "capacity": "Ёмкость",
+            "resistance": "Сопротивление (Ом)",
+            "article": "Статья",
+            "type": "Тип компонента",
+            "company": "Производитель",
+            "tag": "Теги",
+        }
 
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Rate
         fields = ["rating", "comment"]
+        labels = {
+            "rating": "Оценка",
+            "comment": "Комментарий",
+        }

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'articles',
     'simple_history',
     'pgtrigger',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,8 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "ShopBoom <no-reply@shopboo
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PROMETHEUS_MULTIPROC_DIR = os.getenv("PROMETHEUS_MULTIPROC_DIR", "/app/metrics_data")
+
+GRAPH_MODELS ={
+    "all_applications":True,
+    "gorup_models":True,
+}

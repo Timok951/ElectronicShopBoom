@@ -68,6 +68,14 @@ def home(request):
         "page_obj": page_obj,
         "saved_filter_summary": saved_filter_summary,
     }
+    
+    if request.GET.get("clear"):
+        preference = getattr(request.user, "preference", None)
+        if preference:
+            preference.saved_filters = {}
+            preference.save(update_fields=["saved_filters"])
+        return redirect("home")
+    
     return render(request, "main/home_page.html", context)
     
 

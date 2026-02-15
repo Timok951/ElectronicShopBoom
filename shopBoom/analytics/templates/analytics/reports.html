@@ -4,29 +4,32 @@
 <section class="top">
     <div class="wrapper">
         <h2 class="top__title section__title">
-            Analytics snapshots
+            Аналитические отчёты
         </h2>
         <p class="top__description">
-            Charts visualize inventory and revenue while the tables reveal the cached views that track orders and stock.
+            Диаграммы отображают складские остатки и выручку, а таблицы показывают кэшированные представления,
+            отслеживающие заказы и наличие товаров.
         </p>
+
         <section class="chart-section">
             <div class="chart-card">
-                <h3 class="top__card-title">Inventory by type</h3>
+                <h3 class="top__card-title">Склад по типам</h3>
                 <canvas id="goods-chart"></canvas>
             </div>
             <div class="chart-card">
-                <h3 class="top__card-title">Revenue performance</h3>
+                <h3 class="top__card-title">Динамика выручки</h3>
                 <canvas id="orders-chart"></canvas>
             </div>
         </section>
+
         {% for view in views %}
             <div class="top__card">
                 <h3 class="top__card-title">{{ view.label }}</h3>
                 {% if view.error %}
-                    <p>Error: {{ view.error }}</p>
+                    <p>Ошибка: {{ view.error }}</p>
                 {% else %}
                     <div class="top__card-misc" style="flex-direction: column; gap: 8px;">
-                        <p><strong>Columns:</strong> {{ view.columns|join:", " }}</p>
+                        <p><strong>Столбцы:</strong> {{ view.columns|join:", " }}</p>
                         <div class="table-scroll">
                             <table class="data-table">
                                 <thead>
@@ -45,7 +48,7 @@
                                         </tr>
                                     {% empty %}
                                         <tr>
-                                            <td colspan="{{ view.columns|length }}">No data</td>
+                                            <td colspan="{{ view.columns|length }}">Нет данных</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -62,10 +65,11 @@
 <script>
     const goodsUrl = "{% url 'analytics_goods_chart' %}";
     const ordersUrl = "{% url 'analytics_orders_chart' %}";
+
     function createChart(ctx, config) {
         fetch(config.url)
             .then((res) => {
-                if (!res.ok) throw new Error("Chart data failed");
+                if (!res.ok) throw new Error("Ошибка загрузки данных графика");
                 return res.json();
             })
             .then((data) => {
@@ -79,6 +83,7 @@
 
     const goodsCtx = document.getElementById("goods-chart");
     const ordersCtx = document.getElementById("orders-chart");
+
     if (goodsCtx) {
         createChart(goodsCtx, {
             url: goodsUrl,
@@ -91,12 +96,13 @@
                     },
                     title: {
                         display: true,
-                        text: "Inventory per category",
+                        text: "Остатки по категориям",
                     },
                 },
             },
         });
     }
+
     if (ordersCtx) {
         createChart(ordersCtx, {
             url: ordersUrl,
@@ -109,7 +115,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: "Revenue over time",
+                        text: "Выручка по времени",
                     },
                 },
             },

@@ -4,44 +4,53 @@
 <section class="top">
     <div class="wrapper">
         <header class="top__intro">
-            <p class="top__subtitle">Components curated for every electronics project.</p>
-            <h2 class="top__title section__title">ShopBoom electronics catalog</h2>
+            <p class="top__subtitle">Компоненты для любой электроники</p>
+            <h2 class="top__title section__title">Каталог магазина электроники «Бум»</h2>
             <p class="top__description">
-                Browse capacitors, resistors, sensors and more with live stock and smart filters.
+                Найдите всё необходимое — конденсаторы, резисторы и другие компоненты с помощью фильтров
             </p>
         </header>
 
         <form method="GET" class="filter-grid form-card">
             {% csrf_token %}
+
             <div class="filter-field">
                 {{ Form.name.label_tag }}
                 {{ Form.name }}
             </div>
+
             <div class="filter-field">
                 {{ Form.type.label_tag }}
                 {{ Form.type }}
             </div>
+
             <div class="filter-field">
                 {{ Form.company.label_tag }}
                 {{ Form.company }}
             </div>
+
             <div class="filter-field">
                 {{ Form.cost.label_tag }}
                 {{ Form.cost }}
             </div>
+
+            <!-- Радиокнопки с подписью рядом -->
             <div class="filter-field filter-field--tags">
-                {{ Form.tag.label_tag }}
-                {{ Form.tag }}
+                <label>{{ Form.tag.label }}</label>
+                <div class="radio-inline">
+                    {{ Form.tag }}
+                </div>
             </div>
+
             <div class="filter-field filter-actions">
-                <button type="submit" class="top_card-button">Apply filters</button>
-                <a href="{% url 'home' %}" class="top_card-button top_card-button--ghost">Clear filters</a>
+                <button type="submit" class="top_card-button">Применить фильтры</button>
+                <a href="{% url 'home' %}?clear=1" class="top_card-button top_card-button--ghost">Сбросить</a>
             </div>
         </form>
 
         {% if saved_filter_summary %}
             <div class="filter-note">
-                <strong>Saved filters:</strong>
+                <strong>Сохранённые фильтры:</strong>
                 <div class="filter-note__list">
                     {% for entry in saved_filter_summary %}
                         <span>{{ entry.label }}: {{ entry.value }}</span>
@@ -54,15 +63,25 @@
             {% for Good in page_obj %}
                 <div class="top__card">
                     <div class="top__card-pic">
-                        <img src="{{ Good.image.url }}" alt="Good" class="top__card-thumb">
+                        <img src="{{ Good.image.url }}" alt="{{ Good.name }}" class="top__card-thumb">
                         <div class="top__card-stats">
                             <h3 class="top__card-title">{{ Good.name }}</h3>
                         </div>
                     </div>
+
                     <div class="top__card-meta">
-                        <span>{% if Good.type %}{{ Good.type.name }}{% else %}General{% endif %}</span>
-                        <span>{% if Good.company %}{{ Good.company.name }}{% else %}Independent source{% endif %}</span>
+                        <span>
+                            {% if Good.type %}{{ Good.type.name }}
+                            {% else %}Общая категория
+                            {% endif %}
+                        </span>
+                        <span>
+                            {% if Good.company %}{{ Good.company.name }}
+                            {% else %}Независимый поставщик
+                            {% endif %}
+                        </span>
                     </div>
+
                     {% with Good.tag.all as tag_list %}
                         {% if tag_list %}
                             <div class="top__card-tags">
@@ -72,75 +91,57 @@
                             </div>
                         {% endif %}
                     {% endwith %}
+
                     <div class="top__card-price">
-                        <p class="top__card-price-text">${{ Good.cost|floatformat:2 }}</p>
-                        <p class="top__card-price-text">Stock: {{ Good.amount }}</p>
+                        <p class="top__card-price-text">{{ Good.cost|floatformat:2 }} ₽</p>
+                        <p class="top__card-price-text">В наличии: {{ Good.amount }}</p>
                     </div>
+
                     <div class="top__card-misc">
                         <form method="post" action="{% url 'cart_add' Good.id %}">
                             {% csrf_token %}
                             <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="top_card-button">Buy now</button>
+                            <button type="submit" class="top_card-button">Купить</button>
                         </form>
-                        <a href="{% url 'good_page' Good.id %}" class="top_card-button">See details</a>
+                        <a href="{% url 'good_page' Good.id %}" class="top_card-button">Подробнее</a>
                     </div>
                 </div>
             {% empty %}
-                <p class="top__empty">No products matched your filters.</p>
+                <p class="top__empty">По выбранным фильтрам товары не найдены.</p>
             {% endfor %}
         </div>
 
         <div class="pagination-controls">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="top_card-button">Previous</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="top_card-button">Назад</a>
             {% endif %}
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="top_card-button">Next</a>
+                <a href="?page={{ page_obj.next_page_number }}" class="top_card-button">Вперёд</a>
             {% endif %}
         </div>
 
         {% if request.user.is_authenticated %}
             {% if request.user.is_staff or request.user.is_superuser %}
                 <section class="top__shortcuts">
-                    <h3 class="section__title">Quick actions</h3>
+                    <h3 class="section__title">Быстрые действия</h3>
                     <div class="top__cards">
                         <div class="top__card">
-                            <p>Analytics reports</p>
-                            <a href="{% url 'analytics_reports' %}" class="top_card-button">Reports</a>
+                            <p>Аналитические отчёты</p>
+                            <a href="{% url 'analytics_reports' %}" class="top_card-button">Отчёты</a>
                         </div>
                         <div class="top__card">
-                            <p>Requirements overview</p>
-                            <a href="{% url 'analytics_requirements' %}" class="top_card-button">Requirements</a>
+                            <p>Обзор требований</p>
+                            <a href="{% url 'analytics_requirements' %}" class="top_card-button">Требования</a>
                         </div>
                         <div class="top__card">
-                            <p>Database backup</p>
-                            <a href="{% url 'admin_backup' %}" class="top_card-button">Backup</a>
+                            <p>Резервное копирование базы данных</p>
+                            <a href="{% url 'admin_backup' %}" class="top_card-button">Создать бэкап</a>
                         </div>
                     </div>
                 </section>
-            {% elif request.user.role %}
-                {% with request.user.role.rolename|lower as role_name %}
-                    {% if role_name == "admin" or role_name == "administrator" %}
-                        <section class="top__shortcuts">
-                            <h3 class="section__title">Quick actions</h3>
-                            <div class="top__cards">
-                                <div class="top__card">
-                                    <p>Analytics reports</p>
-                                    <a href="{% url 'analytics_reports' %}" class="top_card-button">Reports</a>
-                                </div>
-                                <div class="top__card">
-                                    <p>Requirements overview</p>
-                                    <a href="{% url 'analytics_requirements' %}" class="top_card-button">Requirements</a>
-                                </div>
-                                <div class="top__card">
-                                    <p>Database backup</p>
-                                    <a href="{% url 'admin_backup' %}" class="top_card-button">Backup</a>
-                                </div>
-                            </div>
-                        </section>
-                    {% endif %}
-                {% endwith %}
             {% endif %}
         {% endif %}
 

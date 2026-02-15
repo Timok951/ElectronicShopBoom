@@ -4,7 +4,7 @@
 <section class="top">
     <div class="wrapper">
         <h2 class="top__title section__title">
-            Articles
+            Статьи
         </h2>
         <div class="top__cards">
             {% for Article in Articles %}
@@ -21,11 +21,11 @@
                     </div>
                     <p>{{ Article.text|truncatechars:140 }}</p>
                     <div class="top__card-misc">
-                        <a href="{% url 'article_detail' Article.id %}" class="top_card-button">Read</a>
+                        <a href="{% url 'article_detail' Article.id %}" class="top_card-button">Читать</a>
                     </div>
                 </div>
             {% empty %}
-                <p>No articles yet.</p>
+                <p>Сейчас статей нет</p>
             {% endfor %}
         </div>
     </div>
