@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'articles',
     'simple_history',
     'pgtrigger',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
