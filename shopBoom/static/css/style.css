@@ -600,6 +600,65 @@ form label {
     margin: 0;
 }
 
+.filter-card {
+    padding: 30px;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.filter-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filter-column--full {
+    grid-column: span 3;
+}
+
+.filter-field label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.radio-group,
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-item,
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.price-range {
+    display: flex;
+    gap: 10px;
+}
+
+.price-range input {
+    width: 100%;
+}
+
+.filter-actions {
+    grid-column: span 3;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+
 
 @media (max-width: 1200px) {
   .top__cards {
@@ -627,3 +686,5 @@ form label {
     grid-template-columns: 1fr;
   }
 }
+
+

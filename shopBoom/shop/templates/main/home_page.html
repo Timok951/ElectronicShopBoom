@@ -11,42 +11,79 @@
             </p>
         </header>
 
-        <form method="GET" class="filter-grid form-card">
-            {% csrf_token %}
+<form method="GET" class="filter-card form-card">
+    <div class="filter-grid">
 
+        <div class="filter-column">
             <div class="filter-field">
                 {{ Form.name.label_tag }}
                 {{ Form.name }}
             </div>
 
             <div class="filter-field">
-                {{ Form.type.label_tag }}
-                {{ Form.type }}
-            </div>
-
-            <div class="filter-field">
-                {{ Form.company.label_tag }}
-                {{ Form.company }}
-            </div>
-
-            <div class="filter-field">
                 {{ Form.cost.label_tag }}
-                {{ Form.cost }}
-            </div>
-
-            <!-- Радиокнопки с подписью рядом -->
-            <div class="filter-field filter-field--tags">
-                <label>{{ Form.tag.label }}</label>
-                <div class="radio-inline">
-                    {{ Form.tag }}
+                <div class="price-range">
+                    {{ Form.cost }}
                 </div>
             </div>
+        </div>
 
-            <div class="filter-field filter-actions">
-                <button type="submit" class="top_card-button">Применить фильтры</button>
-                <a href="{% url 'home' %}?clear=1" class="top_card-button top_card-button--ghost">Сбросить</a>
+        <div class="filter-column">
+            <div class="filter-field">
+                {{ Form.type.label_tag }}
+                <div class="radio-group">
+                    {% for radio in Form.type %}
+                        <label class="radio-item">
+                            {{ radio.tag }}
+                            <span>{{ radio.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
             </div>
-        </form>
+        </div>
+
+        <div class="filter-column">
+            <div class="filter-field">
+                {{ Form.company.label_tag }}
+                <div class="radio-group">
+                    {% for radio in Form.company %}
+                        <label class="radio-item">
+                            {{ radio.tag }}
+                            <span>{{ radio.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-column filter-column--full">
+            <div class="filter-field">
+                <label>{{ Form.tag.label }}</label>
+                <div class="checkbox-group">
+                    {% for checkbox in Form.tag %}
+                        <label class="checkbox-item">
+                            {{ checkbox.tag }}
+                            <span>{{ checkbox.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="top_card-button">
+                Применить фильтры
+            </button>
+
+            <a href="{% url 'home' %}?clear=1"
+               class="top_card-button top_card-button--ghost">
+                Сбросить
+            </a>
+        </div>
+
+    </div>
+</form>
+
 
         {% if saved_filter_summary %}
             <div class="filter-note">
@@ -111,17 +148,20 @@
             {% endfor %}
         </div>
 
-        <div class="pagination-controls">
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="top_card-button">Назад</a>
-            {% endif %}
+<div class="pagination-controls">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}"
+           class="top_card-button">Назад</a>
+    {% endif %}
 
-            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="top_card-button">Вперёд</a>
-            {% endif %}
-        </div>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}"
+           class="top_card-button">Вперёд</a>
+    {% endif %}
+</div>
+
 
         {% if request.user.is_authenticated %}
             {% if request.user.is_staff or request.user.is_superuser %}
