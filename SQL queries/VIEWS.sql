@@ -12,18 +12,19 @@ FROM cart_order c
 	JOIN users_usercredenetials uc on u.id = uc.user_id
 );
 
-CREATE MATERIALIZED VIEW  good_icome AS(
-SELECT 
-c.date AS date_income,
-u.username AS users_income, 
+DROP MATERIALIZED VIEW IF EXISTS good_icome;
 
-(g.cost * ordi.amount)::Float AS oders_income
-	FROM cart_order c
-	JOIN users_user u ON u.id = c.user_id
-	JOIN cart_orderitem ordi ON ordi.order_id = c.id
-	JOIN shop_good g ON g.id = ordi.good_id
-ORDER BY c.date
-);
+CREATE MATERIALIZED VIEW good_icome AS
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY c.date) AS custom_id,
+    c.date AS date_income,
+    u.username AS users_income, 
+    (g.cost * ordi.amount)::float AS orders_income
+FROM cart_order c
+JOIN users_user u ON u.id = c.user_id
+JOIN cart_orderitem ordi ON ordi.order_id = c.id
+JOIN shop_good g ON g.id = ordi.good_id;
+
 
 
 CREATE MATERIALIZED VIEW dangerous_goods AS(

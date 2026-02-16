@@ -16,12 +16,12 @@ class UserOrders(models.Model):
         db_table = 'user_orders'
         
 class GoodIncome(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.CharField(db_column="users_income", max_length=MAX_LENGTH)
-    date = models.DateField(db_column="date_income", max_length=MAX_LENGTH)
-    orders = models.FloatField(db_column="orders_income", max_length=MAX_LENGTH)
-    
-    class Meta: 
+    custom_id = models.IntegerField(primary_key=True)
+    user = models.CharField(db_column="users_income", max_length=255)
+    date = models.DateField(db_column="date_income")
+    orders = models.FloatField(db_column="orders_income")
+
+    class Meta:
         managed = False
         db_table = "good_icome"
 
