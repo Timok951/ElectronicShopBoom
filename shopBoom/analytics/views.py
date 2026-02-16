@@ -14,7 +14,21 @@ from shop.models import Good
 from .models import UserOrders, GoodIncome, DangerousGoods, OrderReport
 from users.decorators import role_required
 from chartjs.views.base import JSONView
+from django.db import connection
 
+
+MATERIALIZED_VIEWS = [
+    "good_income",
+    "user_orders",
+    "dangerous_goods",
+    "order_report",
+]
+
+
+def refresh_materialized_views():
+    with connection.cursor() as cursor:
+        for view in MATERIALIZED_VIEWS:
+            cursor.execute(f"REFRESH MATERIALIZED VIEW {view};")
 try:
     from reportlab.lib.pagesizes import letter
     from reportlab.pdfgen import canvas
@@ -100,12 +114,14 @@ def _fetch_view_data(model):
 
 @role_required("admin")
 def analytics_reports(request):
+    refresh_materialized_views()  # 👈 ДОБАВИЛИ
     view_names = [
         (UserOrders, "User orders"),
         (GoodIncome, "Goods income"),
         (DangerousGoods, "Dangerous goods"),
         (OrderReport, "Orders report"),
     ]
+    
     data = []
     for model, label in view_names:
         try:
