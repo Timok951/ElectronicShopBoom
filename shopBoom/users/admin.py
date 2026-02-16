@@ -4,8 +4,8 @@ from simple_history.admin import SimpleHistoryAdmin
 from .forms import *
 
 # Register your models here.
-admin.site.register(Role, SimpleHistoryAdmin)
-admin.site.register(User, SimpleHistoryAdmin)
-admin.site.register(UserCredenetials, SimpleHistoryAdmin)
-admin.site.register(UserFavorites, SimpleHistoryAdmin)
+admin.site.register(Role)
+admin.site.register(User)
+admin.site.register(UserCredenetials)
+admin.site.register(UserFavorites)
 
