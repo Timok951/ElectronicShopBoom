@@ -21,7 +21,7 @@ MATERIALIZED_VIEWS = [
     "good_icome",
     "user_orders",
     "dangerous_goods",
-    "order_report",
+    "orders_report",
 ]
 
 
