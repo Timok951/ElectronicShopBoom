@@ -17,13 +17,13 @@ class UserOrders(models.Model):
         
 class GoodIncome(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.CharField(db_column="users_icome", max_length=MAX_LENGTH)
+    user = models.CharField(db_column="users_income", max_length=MAX_LENGTH)
     date = models.DateField(db_column="date_income", max_length=MAX_LENGTH)
     orders = models.FloatField(db_column="orders_income", max_length=MAX_LENGTH)
     
     class Meta: 
         managed = False
-        db_table = "good_income"
+        db_table = "good_icome"
 
 
 class DangerousGoods(models.Model):
