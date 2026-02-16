@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from simple_history.models import HistoricalRecords
 
 MAX_LENGTH = 255
 
@@ -20,7 +21,9 @@ class Role(models.Model):
 class User(AbstractUser):
     email = models.EmailField(unique=True, null=True, max_length=MAX_LENGTH, blank=True, verbose_name="Email")
     bonus = models.DecimalField(null=False, blank=False, default=0.0, decimal_places=2, max_digits=10, verbose_name="Bouns")
-    role = models.ForeignKey( Role, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Role")    
+    role = models.ForeignKey( Role, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Role") 
+    history = HistoricalRecords()
+   
     favorites = models.ManyToManyField(
         'shop.Good',
         through="UserFavorites",
@@ -49,6 +52,7 @@ class UserPreference(models.Model):
     date_format = models.CharField(max_length=32, default="%Y-%m-%d")
     page_size = models.PositiveIntegerField(default=12)
     saved_filters = models.JSONField(default=dict, blank=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f"{self.user.username} preferences"
@@ -63,7 +67,8 @@ class UserCredenetials(models.Model):
     user = models.OneToOneField(User, null=False, blank=False,verbose_name="User", on_delete=models.CASCADE)
     humanname = models.CharField(unique=True, null=True, max_length=MAX_LENGTH,blank=True, verbose_name="User real name")
     phonenumber = models.CharField(unique=True, null=True, max_length=14, blank=True, verbose_name="Phone number")
-    
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.humanname
     
@@ -75,7 +80,8 @@ class UserCredenetials(models.Model):
 class UserFavorites(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False, verbose_name="User")
     good = models.ForeignKey('shop.Good', on_delete=models.CASCADE, null=False, verbose_name="Good")
-    
+    history = HistoricalRecords()
+
     def __str__(self):
         return f"{self.user} + {self.good}"  
     
