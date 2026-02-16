@@ -3,26 +3,26 @@
 
 <section class="top">
     <div class="wrapper">
-        <h2 class="top__title section__title">User settings</h2>
-        <p class="top__description">Update your contact details and preferences before placing orders.</p>
+        <h2 class="top__title section__title">Пользовательсике настройки</h2>
+        <p class="top__description">Обновите ваши контактные данные</p>
         <div class="top__cards">
             <div class="top__card">
-                <h3 class="section__title">Profile details</h3>
+                <h3 class="section__title">Настройки профиля</h3>
                 <form method="post" class="form-card">
                     {% csrf_token %}
                     <input type="hidden" name="form_type" value="profile">
                     {{ profile_form.as_p }}
                     {{ credentials_form.as_p }}
-                    <button type="submit" class="top_card-button">Save profile</button>
+                    <button type="submit" class="top_card-button">Сохранить профиль</button>
                 </form>
             </div>
             <div class="top__card">
-                <h3 class="section__title">Preferences</h3>
+                <h3 class="section__title">настройки</h3>
                 <form method="post" class="form-card">
                     {% csrf_token %}
                     <input type="hidden" name="form_type" value="preferences">
                     {{ preference_form.as_p }}
-                    <button type="submit" class="top_card-button">Save preferences</button>
+                    <button type="submit" class="top_card-button">Сохранить настройки</button>
                 </form>
             </div>
         </div>
