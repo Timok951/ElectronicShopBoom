@@ -18,7 +18,7 @@ from django.db import connection
 
 
 MATERIALIZED_VIEWS = [
-    "good_income",
+    "good_icome",
     "user_orders",
     "dangerous_goods",
     "order_report",
@@ -114,7 +114,7 @@ def _fetch_view_data(model):
 
 @role_required("admin")
 def analytics_reports(request):
-    refresh_materialized_views()  # 👈 ДОБАВИЛИ
+    refresh_materialized_views()  
     view_names = [
         (UserOrders, "User orders"),
         (GoodIncome, "Goods income"),
