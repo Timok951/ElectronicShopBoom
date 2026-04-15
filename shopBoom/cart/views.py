@@ -9,9 +9,7 @@ def cart_summarry(request):
     return render(request, "cart/cart_summary.html", {} )
 
 def cart_add(request, pk):
-    good = Good.objects.get(id = pk)
-    33
-    
+    pass
 
 def cart_delete(request):
     pass
